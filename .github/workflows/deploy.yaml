@@ -28,4 +28,4 @@ jobs:
         run: yarn install && yarn build
 
       - name: Sending repository to server
-        run: rsync -avz -e 'ssh -p 29979' --delete . ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.TARGET_DIRECTORY }}
+        run: rsync -avz -e 'ssh -p 29979' --delete ./build ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.TARGET_DIRECTORY }}
