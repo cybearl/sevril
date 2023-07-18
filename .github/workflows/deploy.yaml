@@ -24,8 +24,8 @@ jobs:
       - name: Adding SSH key to known hosts
         run: ssh-keyscan -p ${{ secrets.PORT }} ${{ secrets.HOST }}  >> ~/.ssh/known_hosts
 
-      - name: Build the React app
+      - name: Building the React app
         run: yarn install && yarn build
 
-      - name: Sending repository to server
-        run: rsync -avz -e 'ssh -p 29979' --delete ./build ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.TARGET_DIRECTORY }}
+      - name: Sending built app to server
+        run: rsync -avz -e 'ssh -p 29979' --delete ./build/ ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.TARGET_DIRECTORY }}
