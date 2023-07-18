@@ -6,6 +6,7 @@
     "homepage": ".",
     "private": true,
     "dependencies": {
+        "@craco/craco": "^7.1.0",
         "animate.css": "^4.1.1",
         "mongodb": "^5.7.0",
         "react": "^18.2.0",
@@ -29,7 +30,19 @@
         "typescript": "^5.1.6"
     },
     "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build"
+        "start": "craco start",
+        "build": "craco build"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
     }
 }

@@ -1,5 +1,27 @@
 module.exports = {
-    "settings": {
+    plugins: [
+        "react",
+        "@typescript-eslint",
+        "import"
+    ],
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    extends: [
+        "plugin:@typescript-eslint/recommended",
+        "plugin:import/recommended",
+        "plugin:import/typescript",
+    ],
+    parser: "@typescript-eslint/parser",
+    parserOptions: {
+        ecmaFeatures: {
+            jsx: true
+        },
+        ecmaVersion: "latest",
+        sourceType: "module"
+    },
+    settings: {
         "react": {
             "createClass": "createReactClass",      // Regex for Component Factory to use,
             "pragma": "React",                      // Pragma to use, default to "React"
@@ -53,62 +75,46 @@ module.exports = {
                 "name": "Link",
                 "linkAttribute": "to"
             }
-        ]
-    },
-    plugins: [
-        "react",
-        "@typescript-eslint",
-        "import"
-    ],
-    "env": {
-        "browser": true,
-        "es2021": true
-    },
-    extends: [
-        "plugin:@typescript-eslint/recommended",
-        "plugin:import/recommended",
-        "plugin:import/typescript",
-    ],
-    parser: "@typescript-eslint/parser",
-    parserOptions: {
-        ecmaFeatures: {
-            jsx: true
-        },
-        ecmaVersion: "latest",
-        sourceType: "module"
-    },
-    settings: {
+        ],
         "import/parsers": {
-            "@typescript-eslint/parser": [".ts"]
+            "@typescript-eslint/parser": [".ts", ".tsx"]
         },
         "import/resolver": {
             "typescript": {
                 "alwaysTryTypes": true,
                 "project": "./tsconfig.json"
             }
-        },
+        }
     },
     rules: {
         "indent": "off",
         "@typescript-eslint/indent": [
-            "error",
+            "warn",
             4,
             {
                 "SwitchCase": 1
             }
         ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
         "quotes": [
             "warn",
             "double"
         ],
-        "prefer-const": "warn",
         "semi": [
-            "warn",
+            "error",
             "always"
         ],
         "object-curly-spacing": [
             "warn",
             "always"
+        ],
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/no-unused-vars": [
+            "warn"
         ],
         "sort-imports": [
             "warn",
@@ -137,6 +143,16 @@ module.exports = {
                     order: "asc",
                     caseInsensitive: true
                 }
+            }
+        ],
+        "arrow-body-style": [
+            "warn",
+            "as-needed"
+        ],
+        "import/newline-after-import": [
+            "warn",
+            {
+                count: 2
             }
         ]
     }
