@@ -145,6 +145,12 @@ module.exports = {
                 }
             }
         ],
+        "import/no-useless-path-segments": [
+            "warn",
+            {
+                noUselessIndex: true
+            }
+        ],
         "arrow-body-style": [
             "warn",
             "as-needed"
