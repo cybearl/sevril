@@ -5,6 +5,11 @@ module.exports = {
     ],
     theme: {
         extend: {
+            height: {
+                screen: [
+                    "100vh /* fallback for Opera, IE and etc. */", "100dvh"
+                ],
+            },
             colors: {
                 main: "#000",
                 primary: {
