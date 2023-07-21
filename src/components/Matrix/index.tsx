@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import useIpAddress from "@/hooks/useIpAddress";
 
@@ -9,6 +9,8 @@ export default function Matrix() {
     const [username, setUsername] = useState("[loading..]");
     const [caret, setCaret] = useState(" █");
     const [input, setInput] = useState("");
+
+    const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
     useEffect(() => {
         setUsername(`[${ipAddress}@SEVRIL]$`);
@@ -22,8 +24,18 @@ export default function Matrix() {
         return () => clearInterval(interval);
     }, [caret]);
 
+    useEffect(() => {
+        if (textAreaRef.current) {
+            textAreaRef.current.selectionStart = textAreaRef.current.selectionEnd = input.length;
+        }
+    }, [input]);
+
     const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const value = e.target.value;
+        const value = e.target.value.slice(0, -1);
+
+        if (value.includes("█")) {
+            console.log("nope");
+        }
 
         if (value.length > 128) {
             return;
@@ -33,13 +45,13 @@ export default function Matrix() {
     };
 
     return (
-        <div className="relative w-full h-full px-6 py-5 overflow-hidden">
-            <div className="absolute text-2xl top-5 left-6 text-primary-default">
+        <div className="relative w-full h-full px-6 py-5 overflow-hidden sm:text-2xl max-sm:text-xl">
+            <div className="absolute top-5 left-6 text-primary-default">
                 {username}
             </div>
 
             <textarea
-                className="w-full h-full overflow-hidden text-2xl bg-transparent outline-none resize-none text-primary-default text-glitch caret-transparent"
+                className="relative w-full h-full overflow-hidden bg-transparent outline-none resize-none text-primary-default text-glitch caret-transparent"
                 style={{
                     textIndent: `${username.length + 1}ch`,
                 }}
@@ -49,6 +61,7 @@ export default function Matrix() {
                 spellCheck={false}
                 value={input + caret}
                 onChange={handleTextChange}
+                ref={textAreaRef}
             />
         </div>
     );
