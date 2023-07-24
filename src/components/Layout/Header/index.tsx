@@ -7,11 +7,11 @@ export default function Header() {
             className="flex items-center justify-between tracking-[0.3rem] w-full px-6 text-2xl font-bold text-gray-800 bg-primary-default shadow-main"
         >
             <div className="sm:hidden">
-                $sevril::terminal
+                $SEVRIL::TERMINAL
             </div>
 
             <div className="max-sm:hidden">
-                $sevril.net::terminal
+                $SEVRIL.NET::TERMINAL
             </div>
 
             <div className="flex items-center justify-between w-full h-8 max-w-sm pl-4 max-md:hidden">

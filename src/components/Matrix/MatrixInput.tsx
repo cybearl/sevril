@@ -5,30 +5,35 @@ import useIpAddress from "@/hooks/useIpAddress";
 import useTextAreaAutoSize from "@/hooks/useTextAreaAutoSize";
 
 
-export default function MatrixInput() {
+type MatrixInputProps = {
+    username: string;
+    defaultValue?: string;
+};
+
+export default function MatrixInput(props: MatrixInputProps) {
     const ipAddress = useIpAddress();
 
     const [input, setInput] = useState({
-        username: "",
+        username: props.username,
 
         caretEnabled: true,
-        caretOffset: 0,
+        caretOffsetInvisibleText: "",
         caret: "",
 
-        value: "",
+        value: props.defaultValue || "",
 
-        usernameRef: useRef<HTMLDivElement>(null),
         textAreaRef: useRef<HTMLTextAreaElement>(null),
         caretAreaRef: useRef<HTMLTextAreaElement>(null)
     });
 
     const {
-        setLastInputValue
+        setLastInputValue,
+        setHistory
     } = useContext(MatrixContext);
 
     // Auto-size text area & caret area
     useTextAreaAutoSize(input.textAreaRef.current, input.value);
-    useTextAreaAutoSize(input.caretAreaRef.current, input.caret);
+    useTextAreaAutoSize(input.caretAreaRef.current, input.value);
 
     // Generate formatted username
     useEffect(() => {
@@ -60,7 +65,7 @@ export default function MatrixInput() {
 
         setInput(input => ({
             ...input,
-            caretOffset: input.username.length + caretPosition
+            caretOffsetInvisibleText: " ".repeat(caretPosition)
         }));
     }, [
         input.username,
@@ -77,6 +82,8 @@ export default function MatrixInput() {
             return;
         }
 
+        console.log(JSON.stringify(value));
+
         setInput(input => ({
             ...input,
             value: value
@@ -84,19 +91,19 @@ export default function MatrixInput() {
     };
 
     return (
-        <div className="relative w-full h-full px-6 py-5 overflow-hidden sm:text-2xl max-sm:text-xl selection:bg-primary-default selection:bg-opacity-[0.6] selection:text-white">
-            <div className="absolute top-5 left-6 text-primary-default" ref={input.usernameRef}>
+        <div className="relative w-full overflow-hidden sm:text-2xl max-sm:text-xl selection:bg-primary-default selection:bg-opacity-[0.6] selection:text-white">
+            <div className="absolute top-0 left-0 tracking-wide">
                 {input.username}
             </div>
 
             <textarea
                 className={`
-                    relative z-10 border w-full overflow-hidden tracking-wide bg-transparent
-                    outline-none resize-none text-primary-default text-glitch
+                    relative z-10 w-full overflow-hidden tracking-wide bg-transparent
+                    outline-none resize-none text-glitch
                     ${input.caretEnabled ? "caret-transparent" : ""}
                 `}
                 style={{
-                    textIndent: `${input.username.length + 1}ch`,
+                    textIndent: `${input.username.length + 3}ch`,
                 }}
                 ref={input.textAreaRef}
                 autoComplete="off"
@@ -110,7 +117,14 @@ export default function MatrixInput() {
                 onBlur={handleTextChange}
                 onKeyDown={e => {
                     if (e.key === "Enter") {
+                        e.preventDefault();
+
                         setLastInputValue(input.value);
+                        setHistory(history => [
+                            ...history,
+                            input.value
+                        ]);
+
                         setInput(input => ({
                             ...input,
                             value: ""
@@ -120,7 +134,7 @@ export default function MatrixInput() {
             />
 
             <textarea
-                className="absolute z-0 overflow-hidden tracking-wide bg-transparent outline-none resize-none select-none caret-transparent right-6 left-6 top-5"
+                className="absolute top-0 bottom-0 left-0 right-0 z-0 overflow-hidden tracking-wide bg-transparent outline-none resize-none select-none text-glitch caret-transparent"
                 ref={input.caretAreaRef}
                 autoComplete="off"
                 autoCorrect="off"
@@ -128,7 +142,7 @@ export default function MatrixInput() {
                 spellCheck={false}
                 rows={1}
                 readOnly
-                value={"\xa0".repeat(input.caretOffset) + input.caret}
+                value={input.value + input.caret}
             />
         </div>
     );
