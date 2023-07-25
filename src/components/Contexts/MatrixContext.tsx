@@ -1,5 +1,7 @@
 import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState } from "react";
 
+import config from "@/configs/main.config";
+
 
 export type MatrixContextType = {
     lastInputValue: string;
@@ -21,9 +23,15 @@ export const MatrixProvider = ({ children }: { children: ReactNode; }) => {
         setHistory
     };
 
+    // Limit history to 32 entries
     useEffect(() => {
-        console.log("lastInputValue:", lastInputValue);
-    }, [lastInputValue]);
+        if (history.length > config.terminalMaxEntries) {
+            setHistory(history => history.slice(
+                history.length - config.terminalMaxEntries,
+                history.length
+            ));
+        }
+    }, [history]);
 
     return (
         <MatrixContext.Provider value={context}>

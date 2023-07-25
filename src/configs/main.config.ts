@@ -1,5 +1,5 @@
 const config = {
-
+    terminalMaxEntries: 2
 };
 
 

@@ -62,18 +62,18 @@ export default function MatrixInput(props: MatrixInputProps) {
     };
 
     return (
-        <div className="relative w-full min-h-[1ch] sm:text-2xl max-sm:text-xl selection:bg-primary-default selection:bg-opacity-[0.6] selection:text-white">
+        <div className="relative w-full min-h-[1em] sm:text-2xl max-sm:text-xl selection:bg-primary-default selection:bg-opacity-[0.6] selection:text-white">
             <div className="absolute top-0 left-0 tracking-wide">
                 {input.username}
             </div>
 
             <textarea
                 className={`
-                    relative z-10 w-full tracking-wide bg-transparent
+                    relative w-full z-10 tracking-wide bg-transparent
                     outline-none resize-none text-glitch
                 `}
                 style={{
-                    textIndent: `${input.username.length + 3}ch`,
+                    textIndent: `${input.username.length + 3}ch`
                 }}
                 ref={input.textAreaRef}
                 autoComplete="off"
