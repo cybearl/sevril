@@ -1,5 +1,9 @@
 const config = {
-    terminalMaxEntries: 2
+    terminalMaxEntries: 2,
+
+    // IP
+    ipAddressPlaceholder: "UNKNOWN",
+    ipAddressLocalStorageKey: "ipAddress",
 };
 
 
