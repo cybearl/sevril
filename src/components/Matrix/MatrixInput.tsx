@@ -15,15 +15,8 @@ export default function MatrixInput(props: MatrixInputProps) {
 
     const [input, setInput] = useState({
         username: props.username,
-
-        caretEnabled: true,
-        caretOffsetInvisibleText: "",
-        caret: "",
-
         value: props.defaultValue || "",
-
-        textAreaRef: useRef<HTMLTextAreaElement>(null),
-        caretAreaRef: useRef<HTMLTextAreaElement>(null)
+        textAreaRef: useRef<HTMLTextAreaElement>(null)
     });
 
     const {
@@ -33,7 +26,6 @@ export default function MatrixInput(props: MatrixInputProps) {
 
     // Auto-size text area & caret area
     useTextAreaAutoSize(input.textAreaRef.current, input.value);
-    useTextAreaAutoSize(input.caretAreaRef.current, input.value);
 
     // Generate formatted username
     useEffect(() => {
@@ -43,35 +35,16 @@ export default function MatrixInput(props: MatrixInputProps) {
         }));
     }, [ipAddress]);
 
-    // Caret blink
+    // Force focus on interval
     useEffect(() => {
         const interval = setInterval(() => {
-            setInput(input => ({
-                ...input,
-                caretEnabled: true,
-                caret: input.caret === "▌" ? "" : "▌"
-            }));
-        }, 400);
+            input.textAreaRef.current?.focus();
+        }, 5);
 
-        return () => clearInterval(interval);
-    }, [
-        input.caretEnabled,
-        input.caret
-    ]);
-
-    // Measure caret offset
-    useEffect(() => {
-        const caretPosition = input.textAreaRef.current?.selectionStart || 0;
-
-        setInput(input => ({
-            ...input,
-            caretOffsetInvisibleText: " ".repeat(caretPosition)
-        }));
-    }, [
-        input.username,
-        input.value,
-        input.textAreaRef.current?.selectionStart
-    ]);
+        return () => {
+            clearInterval(interval);
+        };
+    }, [input.textAreaRef]);
 
     // Handle user input
     const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -82,8 +55,6 @@ export default function MatrixInput(props: MatrixInputProps) {
             return;
         }
 
-        console.log(JSON.stringify(value));
-
         setInput(input => ({
             ...input,
             value: value
@@ -91,16 +62,15 @@ export default function MatrixInput(props: MatrixInputProps) {
     };
 
     return (
-        <div className="relative w-full overflow-hidden sm:text-2xl max-sm:text-xl selection:bg-primary-default selection:bg-opacity-[0.6] selection:text-white">
+        <div className="relative w-full min-h-[1ch] sm:text-2xl max-sm:text-xl selection:bg-primary-default selection:bg-opacity-[0.6] selection:text-white">
             <div className="absolute top-0 left-0 tracking-wide">
                 {input.username}
             </div>
 
             <textarea
                 className={`
-                    relative z-10 w-full overflow-hidden tracking-wide bg-transparent
+                    relative z-10 w-full tracking-wide bg-transparent
                     outline-none resize-none text-glitch
-                    ${input.caretEnabled ? "caret-transparent" : ""}
                 `}
                 style={{
                     textIndent: `${input.username.length + 3}ch`,
@@ -112,7 +82,6 @@ export default function MatrixInput(props: MatrixInputProps) {
                 spellCheck={false}
                 value={input.value}
                 rows={1}
-                autoFocus
                 onChange={handleTextChange}
                 onBlur={handleTextChange}
                 onKeyDown={e => {
@@ -131,18 +100,6 @@ export default function MatrixInput(props: MatrixInputProps) {
                         }));
                     }
                 }}
-            />
-
-            <textarea
-                className="absolute top-0 bottom-0 left-0 right-0 z-0 overflow-hidden tracking-wide bg-transparent outline-none resize-none select-none text-glitch caret-transparent"
-                ref={input.caretAreaRef}
-                autoComplete="off"
-                autoCorrect="off"
-                autoCapitalize="off"
-                spellCheck={false}
-                rows={1}
-                readOnly
-                value={input.value + input.caret}
             />
         </div>
     );
