@@ -6,14 +6,16 @@ import Header from "@/components/Layout/Header";
 
 export default function Layout({ children }: { children: ReactNode; }) {
     return (
-        <div className="flex flex-col w-screen min-h-screen crt bg-main text-primary-default">
-            <Header />
+        <div className="relative w-full min-h-screen bg-main">
+            <div className="flex flex-col text-primary-default crt">
+                <Header />
 
-            <main className="relative w-full h-full overflow-hidden border">
-                {children}
-            </main>
+                <main className="relative w-full h-[calc(100vh-2rem)] min-h-[24rem]">
+                    {children}
+                </main>
 
-            <Footer />
+                <Footer />
+            </div>
         </div>
     );
 }

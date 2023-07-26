@@ -22,6 +22,15 @@
 }
 
 body {
+    @apply scrollbar-none;
     font-family: 'VT323', monospace;
     user-select: none;
+}
+
+h1 {
+    @apply tracking-wide text-8xl text-primary-default;
+}
+
+p {
+    @apply text-2xl font-normal text-primary-default;
 }

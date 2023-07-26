@@ -5,6 +5,9 @@ module.exports = {
     ],
     theme: {
         extend: {
+            screens: {
+                "xs": "320px"
+            },
             height: {
                 screen: [
                     "100vh /* fallback for Opera, IE and etc. */", "100dvh"
@@ -21,5 +24,7 @@ module.exports = {
             }
         },
     },
-    plugins: [],
+    plugins: [
+        require("tailwind-scrollbar")
+    ],
 };
