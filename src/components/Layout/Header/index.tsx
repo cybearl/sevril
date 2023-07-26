@@ -7,11 +7,11 @@ export default function Header() {
             className="flex items-center justify-between h-8 tracking-[0.3rem] w-full px-6 bg-primary-default shadow-main"
         >
             <div className="text-2xl font-bold text-gray-800 sm:hidden">
-                $SEVRIL::VIRTUAL
+                $SEVRIL::ENV
             </div>
 
             <div className="text-2xl font-bold text-gray-800 max-sm:hidden">
-                $SEVRIL.NET::VIRTUAL
+                $SEVRIL.NET::ENV
             </div>
 
             <div className="flex items-center justify-between w-full h-8 max-w-sm pl-4 max-md:hidden">
