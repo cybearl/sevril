@@ -21,7 +21,7 @@ export default function Matrix() {
     }, [ipAddress]);
 
     return (
-        <div className="absolute left-0 right-0 flex flex-col px-6 space-y-2 overflow-x-hidden overflow-y-scroll top-4 bottom-12 no-scrollbar">
+        <div className="fixed inset-0 flex flex-col px-6 pt-10 space-y-2 overflow-x-hidden overflow-y-scroll no-scrollbar">
             {history.map((text, index) => (
                 <MatrixText
                     username={username}

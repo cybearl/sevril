@@ -22,7 +22,8 @@ export default function MatrixInput(props: MatrixInputProps) {
     const {
         setCommandIndex,
         setCommand,
-        setHistory
+        setHistory,
+        isInputLocked
     } = useContext(MatrixContext);
 
     // Auto-size text area & caret area
@@ -37,6 +38,7 @@ export default function MatrixInput(props: MatrixInputProps) {
     }, [ipAddress]);
 
     // Force focus on interval
+    // TODO: Un-focus when clicking on MatrixText allowing for copy/paste
     useEffect(() => {
         const interval = setInterval(() => {
             input.textAreaRef.current?.focus();
@@ -63,43 +65,47 @@ export default function MatrixInput(props: MatrixInputProps) {
     };
 
     return (
-        <div className="relative w-full min-h-[1em] sm:text-2xl max-sm:text-xl selection:bg-primary-default selection:bg-opacity-[0.6] selection:text-white">
-            <div className="absolute top-0 left-0 tracking-wide">
-                {input.username}
-            </div>
+        <>
+            {!isInputLocked && (
+                <div className="relative w-full min-h-[1em] sm:text-2xl max-sm:text-xl selection:bg-primary-default overflow-hidden selection:bg-opacity-[0.6] selection:text-white">
+                    <div className="absolute top-0 left-0 tracking-wide">
+                        {input.username}
+                    </div>
 
-            <textarea
-                className={`
-                    relative w-full z-10 tracking-wide bg-transparent
-                    outline-none resize-none text-glitch
-                `}
-                style={{
-                    textIndent: `${input.username.length + 3}ch`
-                }}
-                ref={input.textAreaRef}
-                autoComplete="off"
-                autoCorrect="off"
-                autoCapitalize="off"
-                spellCheck={false}
-                value={input.value}
-                rows={1}
-                onChange={handleTextChange}
-                onBlur={handleTextChange}
-                onKeyDown={e => {
-                    if (e.key === "Enter") {
-                        e.preventDefault();
+                    <textarea
+                        className={`
+                            relative w-full z-10 tracking-wide bg-transparent
+                            outline-none resize-none text-glitch
+                        `}
+                        style={{
+                            textIndent: `${input.username.length + 3}ch`
+                        }}
+                        ref={input.textAreaRef}
+                        autoComplete="off"
+                        autoCorrect="off"
+                        autoCapitalize="off"
+                        spellCheck={false}
+                        value={input.value}
+                        rows={1}
+                        onChange={handleTextChange}
+                        onBlur={handleTextChange}
+                        onKeyDown={e => {
+                            if (e.key === "Enter") {
+                                e.preventDefault();
 
-                        setCommandIndex(index => index + 1);
-                        setCommand(input.value);
-                        setHistory(history => [...history, input.value]);
+                                setCommandIndex(index => index + 1);
+                                setCommand(input.value);
+                                setHistory(history => [...history, input.value]);
 
-                        setInput(input => ({
-                            ...input,
-                            value: ""
-                        }));
-                    }
-                }}
-            />
-        </div>
+                                setInput(input => ({
+                                    ...input,
+                                    value: ""
+                                }));
+                            }
+                        }}
+                    />
+                </div>
+            )}
+        </>
     );
 }

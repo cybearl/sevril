@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: ReactNode; }) {
         <div className="flex flex-col w-screen h-screen crt bg-main text-primary-default">
             <Header />
 
-            <main className="relative w-full h-full overflow-hidden">
+            <main className="relative w-full h-full overflow-hidden border">
                 {children}
             </main>
 
