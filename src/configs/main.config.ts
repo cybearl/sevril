@@ -1,5 +1,5 @@
 const config = {
-    terminalMaxEntries: 2,
+    terminalMaxEntries: 64,
 
     // IP
     ipAddressPlaceholder: "UNKNOWN",

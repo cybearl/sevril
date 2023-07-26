@@ -20,7 +20,8 @@ export default function MatrixInput(props: MatrixInputProps) {
     });
 
     const {
-        setLastInputValue,
+        setCommandIndex,
+        setCommand,
         setHistory
     } = useContext(MatrixContext);
 
@@ -88,11 +89,9 @@ export default function MatrixInput(props: MatrixInputProps) {
                     if (e.key === "Enter") {
                         e.preventDefault();
 
-                        setLastInputValue(input.value);
-                        setHistory(history => [
-                            ...history,
-                            input.value
-                        ]);
+                        setCommandIndex(index => index + 1);
+                        setCommand(input.value);
+                        setHistory(history => [...history, input.value]);
 
                         setInput(input => ({
                             ...input,
