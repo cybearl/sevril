@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 
 
-type IsWindowSize = {
-    width: number;
-    height: number;
-};
-
 /**
  * Get the current window size.
  * @returns The current window size.
@@ -14,7 +9,7 @@ export default function useWindowSize(): IsWindowSize {
     const [windowSize, setWindowSize] = useState({
         width: 0,
         height: 0,
-    } as IsWindowSize);
+    });
 
     useEffect(() => {
         const handleResize = () => {
