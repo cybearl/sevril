@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
  * Get the current window size.
  * @returns The current window size.
  */
-export default function useWindowSize(): IsWindowSize {
+export default function useWindowSize() {
     const [windowSize, setWindowSize] = useState({
         width: 0,
         height: 0,
